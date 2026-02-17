@@ -10,7 +10,7 @@ amazon:
   service: S3
   access_key_id: <%= ENV.fetch("AWS_ACCESS_KEY_ID", "") %>
   secret_access_key: <%= ENV.fetch("AWS_SECRET_ACCESS_KEY", "") %>
-  region: <%= ENV.fetch("AWS_REGION", "") %>
+  region: <%= ENV["AWS_REGION"].presence || "us-east-1" %>
   bucket: <%= ENV.fetch("AWS_BUCKET", "spree-#{Rails.env}") %>
 
 
