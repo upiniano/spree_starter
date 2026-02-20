@@ -108,3 +108,4 @@ gem "spree_paypal_checkout", "~> 0.5"
 # Infrastructure gem
 gem "aws-sdk-s3", require: false
 gem 'mailgun-ruby'
+gem "devise_invitable"

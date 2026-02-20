@@ -218,6 +218,9 @@ GEM
       railties (>= 7.0)
       responders
       warden (~> 1.2.3)
+    devise_invitable (2.0.11)
+      actionmailer (>= 5.0)
+      devise (>= 4.6)
     diff-lcs (1.6.2)
     docile (1.4.1)
     doorkeeper (5.8.2)
@@ -895,6 +898,7 @@ DEPENDENCIES
   connection_pool (~> 2.3)
   debug
   devise
+  devise_invitable
   dotenv-rails (~> 3.1)
   foreman
   image_processing (~> 1.13)
