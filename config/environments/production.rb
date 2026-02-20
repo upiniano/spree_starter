@@ -111,6 +111,9 @@ Rails.application.configure do
       host: app_host,
       protocol: "https"
     }
+
+    Rails.application.routes.default_url_options[:host] = app_host
+
     config.hosts << app_host
   end
 
@@ -126,11 +129,4 @@ Rails.application.configure do
   end
 
   config.force_ssl = true
-
-
-  # Fix for Render deployment
-  # this will set the store URL to the render external URL during db:seeds for the first time
-  if ENV['RENDER_EXTERNAL_URL'].present?
-    Rails.application.routes.default_url_options[:host] = ENV['RENDER_EXTERNAL_URL']
-  end
 end
