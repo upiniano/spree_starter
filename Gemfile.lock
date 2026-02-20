@@ -380,6 +380,11 @@ GEM
     mail_form (1.11.0)
       actionpack (>= 7.0)
       activemodel (>= 7.0)
+    mailgun-ruby (1.4.2)
+      faraday (~> 2.1)
+      faraday-multipart (< 2)
+      mini_mime
+      zeitwerk
     mapkick-rb (0.2.0)
     marcel (1.1.0)
     matrix (0.4.3)
@@ -896,6 +901,7 @@ DEPENDENCIES
   importmap-rails
   letter_opener
   listen (>= 3.0)
+  mailgun-ruby
   pg (~> 1.6)
   propshaft
   puma (>= 5.0)
