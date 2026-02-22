@@ -2,7 +2,7 @@ require "sidekiq/web"
 
 Rails.application.routes.draw do
   Spree::Core::Engine.add_routes do
-    # Storefront routes
+    # --- Storefront ---
     scope '(:locale)', locale: /#{Spree.available_locales.join('|')}/, defaults: { locale: nil } do
       devise_for(
         Spree.user_class.model_name.singular_route_key,
@@ -16,6 +16,19 @@ Rails.application.routes.draw do
         router_name: :spree
       )
     end
+
+    # --- Admin ---
+    devise_for(
+      Spree.admin_user_class.model_name.singular_route_key,
+      class_name: Spree.admin_user_class.to_s,
+      controllers: {
+        sessions: 'spree/admin/user_sessions',
+        passwords: 'spree/admin/user_passwords'
+      },
+      skip: :registrations,
+      path: :admin_user,
+      router_name: :spree
+    )
   end
 
   mount Spree::Core::Engine, at: '/'
