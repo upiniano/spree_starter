@@ -70,19 +70,39 @@ Rails.application.configure do
 
   # Set host to be used by links generated in mailer templates.
   # config.action_mailer.default_url_options = { host: "example.com" }
+  config.action_mailer.default_url_options = { host: ENV['APP_DOMAIN'], protocol: "https" }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
-  if ENV['SENDGRID_API_KEY'].present?
-    config.action_mailer.smtp_settings = {
-      user_name: 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
-      password: ENV['SENDGRID_API_KEY'], # This is the secret sendgrid API key which was issued during API key creation
-      domain: ENV.fetch('SENDGRID_DOMAIN', Rails.application.routes.default_url_options[:host]),
-      address: 'smtp.sendgrid.net',
-      port: 587,
-      authentication: :plain,
-      enable_starttls_auto: true
+  #if ENV['SENDGRID_API_KEY'].present?
+  #  config.action_mailer.smtp_settings = {
+  #    user_name: 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
+  #    password: ENV['SENDGRID_API_KEY'], # This is the secret sendgrid API key which was issued during API key creation
+  #    domain: ENV.fetch('SENDGRID_DOMAIN', Rails.application.routes.default_url_options[:host]),
+  #    address: 'smtp.sendgrid.net',
+  #    port: 587,
+  #    authentication: :plain,
+  #    enable_starttls_auto: true
+  #  }
+  #end
+
+  if ENV["MAILGUN_API_KEY"].present? && ENV["MAILGUN_DOMAIN"].present?
+    config.action_mailer.delivery_method = :mailgun
+
+    config.action_mailer.mailgun_settings = {
+      api_key: ENV["MAILGUN_API_KEY"],
+      domain:  ENV["MAILGUN_DOMAIN"]
+    }
+
+    config.action_mailer.default_options = {
+      from: "No Reply <no-reply@#{ENV['MAILGUN_DOMAIN']}>"
     }
   end
+
+  config.action_mailer.default_url_options = {
+    host: ENV["APP_DOMAIN"],
+    protocol: "https"
+  }
+
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -111,6 +131,9 @@ Rails.application.configure do
       host: app_host,
       protocol: "https"
     }
+
+    Rails.application.routes.default_url_options[:host] = app_host
+
     config.hosts << app_host
   end
 
@@ -126,11 +149,4 @@ Rails.application.configure do
   end
 
   config.force_ssl = true
-
-
-  # Fix for Render deployment
-  # this will set the store URL to the render external URL during db:seeds for the first time
-  if ENV['RENDER_EXTERNAL_URL'].present?
-    Rails.application.routes.default_url_options[:host] = ENV['RENDER_EXTERNAL_URL']
-  end
 end

@@ -87,5 +87,5 @@ Rails.application.config.to_prepare do
 end
 
 if ENV["ENABLE_MULTI_STORE"] == "true"
-  Spree.root_domain = ENV.fetch("APP_DOMAIN", "localhost")
+  Spree.root_domain = ENV["APP_DOMAIN"] || ENV["APP_HOST"]
 end
